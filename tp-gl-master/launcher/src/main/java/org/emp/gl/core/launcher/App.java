@@ -1,24 +1,27 @@
 package org.emp.gl.core.launcher;
 
-import org.emp.gl.clients.Horloge ;
+import org.emp.gl.clients.HorlogeGUI;
+import org.emp.gl.clients.CompteARebours;
+import org.emp.gl.timer.service.impl.DummyTimeServiceImpl;
 
-/**
- * Hello world!
- *
- */
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class App {
-
     public static void main(String[] args) {
+        DummyTimeServiceImpl timerService = new DummyTimeServiceImpl();
 
-        testDuTimeService();
-    }
+        // 🔹 Créer plusieurs compte-à-rebours (par exemple 3)
+        List<CompteARebours> comptes = new ArrayList<>();
+        comptes.add(new CompteARebours(timerService, 5));
+        comptes.add(new CompteARebours(timerService, 8));
+        comptes.add(new CompteARebours(timerService, 10));
 
-    private static void testDuTimeService() {
-        Horloge horloge = new Horloge("Num 1") ;
-    }
+        // 🔹 Lancer la GUI
+        SwingUtilities.invokeLater(() -> new HorlogeGUI(timerService, comptes));
 
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        // 🔹 Démarrer le service de temps
+        timerService.start();
     }
 }
